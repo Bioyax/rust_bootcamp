@@ -3,5 +3,9 @@ name = "word_frequency"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name = "word_frequency"
+path = "main.rs"
+
 [dependencies]
 clap = { version = "4.4.18", features = ["derive"] }
