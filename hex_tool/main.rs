@@ -28,15 +28,15 @@ struct Args {
 }
 
 fn parse_offset(offset_str: &str) -> Result<u64, std::num::ParseIntError> {
-    if offset_str.starts_with("0x") {
-        u64::from_str_radix(&offset_str[2..], 16)
+    if let Some(stripped) = offset_str.strip_prefix("0x") {
+        u64::from_str_radix(stripped, 16)
     } else {
         offset_str.parse::<u64>()
     }
 }
 
 fn handle_write(file_path: PathBuf, offset: u64, hex_string: String) -> std::io::Result<()> {
-    let mut file = OpenOptions::new().write(true).create(true).open(file_path)?;
+    let mut file = OpenOptions::new().write(true).create(true).truncate(true).open(file_path)?;
     file.seek(SeekFrom::Start(offset))?;
 
     match hex::decode(hex_string) {
