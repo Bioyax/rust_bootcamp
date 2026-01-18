@@ -36,7 +36,11 @@ fn parse_offset(offset_str: &str) -> Result<u64, std::num::ParseIntError> {
 }
 
 fn handle_write(file_path: PathBuf, offset: u64, hex_string: String) -> std::io::Result<()> {
-    let mut file = OpenOptions::new().write(true).create(true).truncate(true).open(file_path)?;
+    let mut file = OpenOptions::new()
+        .write(true)
+        .create(true)
+        .truncate(true)
+        .open(file_path)?;
     file.seek(SeekFrom::Start(offset))?;
 
     match hex::decode(hex_string) {
@@ -64,7 +68,6 @@ fn handle_read(file_path: PathBuf, offset: u64, size: Option<usize>) -> std::io:
         file.read_to_end(&mut buffer)?
     };
     buffer.truncate(bytes_read);
-
 
     if let Ok(s) = std::str::from_utf8(&buffer) {
         println!("{}", s);
