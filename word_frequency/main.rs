@@ -53,7 +53,7 @@ fn main() {
     sorted_counts.sort_by(|a, b| b.1.cmp(&a.1).then_with(|| a.0.cmp(&b.0)));
 
     let results = sorted_counts.into_iter();
-    
+
     if let Some(top_n) = args.top {
         for (word, count) in results.take(top_n) {
             println!("{}: {}", word, count);
