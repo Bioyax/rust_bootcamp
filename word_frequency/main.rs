@@ -27,11 +27,9 @@ fn main() {
     let mut input = String::new();
     if let Some(text) = args.text {
         input = text;
-    } else {
-        if let Err(e) = io::stdin().read_to_string(&mut input) {
-            eprintln!("Failed to read from stdin: {}", e);
-            return;
-        }
+    } else if let Err(e) = io::stdin().read_to_string(&mut input) {
+        eprintln!("Failed to read from stdin: {}", e);
+        return;
     }
 
     let mut word_counts = HashMap::new();
