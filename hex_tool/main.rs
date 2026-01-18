@@ -69,31 +69,27 @@ fn handle_read(file_path: PathBuf, offset: u64, size: Option<usize>) -> std::io:
     };
     buffer.truncate(bytes_read);
 
-    if let Ok(s) = std::str::from_utf8(&buffer) {
-        println!("{}", s);
-    } else {
-        // Basic hexdump format
-        for (i, chunk) in buffer.chunks(16).enumerate() {
-            print!("{:08x}: ", offset as usize + i * 16);
-            for byte in chunk {
-                print!("{:02x} ", byte);
-            }
-            // Add padding for the last line
-            if chunk.len() < 16 {
-                for _ in 0..(16 - chunk.len()) {
-                    print!("   ");
-                }
-            }
-            print!("|");
-            for &byte in chunk {
-                if (32..=126).contains(&byte) {
-                    print!("{}", byte as char);
-                } else {
-                    print!(".");
-                }
-            }
-            println!("|");
+    // Basic hexdump format
+    for (i, chunk) in buffer.chunks(16).enumerate() {
+        print!("{:08x}: ", offset as usize + i * 16);
+        for byte in chunk {
+            print!("{:02x} ", byte);
         }
+        // Add padding for the last line
+        if chunk.len() < 16 {
+            for _ in 0..(16 - chunk.len()) {
+                print!("   ");
+            }
+        }
+        print!("|");
+        for &byte in chunk {
+            if (32..=126).contains(&byte) {
+                print!("{}", byte as char);
+            } else {
+                print!(".");
+            }
+        }
+        println!("|");
     }
 
     Ok(())
